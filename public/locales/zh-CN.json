@@ -1,0 +1,42 @@
+{
+  "app": {
+    "name": "Tauri Bootstrap Demo"
+  },
+  "titlebar": {
+    "settings": "设置"
+  },
+  "menu": {
+    "file": "文件(F)",
+    "help": "帮助(H)",
+    "settings": "设置",
+    "exit": "退出",
+    "about": "关于"
+  },
+  "about": {
+    "title": "关于 {name}",
+    "desc": "一款基于 Tauri 2 + Vue 3 + Naive UI 的桌面应用模板",
+    "homepage": "官网：",
+    "author": "作者："
+  },
+  "welcome": {
+    "title": "欢迎使用 {name}",
+    "desc": "一款基于 Tauri 2 + Vue 3 + Naive UI 的桌面应用模板，内置 Fluent 风格主题、国际化与设置持久化，可作为新项目的起始骨架。",
+    "openSettings": "打开设置",
+    "greet": "问候后端",
+    "greetFailed": "当前不在 Tauri 环境中，无法调用 Rust 后端"
+  },
+  "settings": {
+    "title": "设置",
+    "close": "关闭",
+    "darkMode": "深色模式",
+    "darkModeHint": "切换应用的浅色与深色主题",
+    "language": "语言",
+    "languageHint": "选择界面显示语言，立即生效",
+    "followSystem": "跟随系统",
+    "about": "关于",
+    "version": "版本"
+  },
+  "status": {
+    "ready": "就绪"
+  }
+}

@@ -1,0 +1,151 @@
+/* ============================================================
+   Tauri Bootstrap Demo — Windows 11 Fluent design tokens & base
+   ============================================================ */
+
+:root {
+  --font: "Segoe UI Variable Text", "Segoe UI Variable", "Segoe UI",
+    "Microsoft YaHei UI", system-ui, sans-serif;
+
+  /* Window layers (semi-transparent so Mica shows through) */
+  --bg-window: rgba(243, 243, 243, 0.86);
+  --bg-layer: #ffffff;
+  --bg-card: rgba(255, 255, 255, 0.72);
+  --bg-subtle: #f4f4f4;
+  --bg-hover: rgba(0, 0, 0, 0.045);
+  --bg-active: rgba(0, 0, 0, 0.08);
+
+  /* Strokes */
+  --stroke: rgba(0, 0, 0, 0.07);
+  --stroke-strong: rgba(0, 0, 0, 0.13);
+  --stroke-control: rgba(0, 0, 0, 0.24);
+
+  /* Text */
+  --text-primary: #1b1b1b;
+  --text-secondary: rgba(0, 0, 0, 0.6);
+  --text-tertiary: rgba(0, 0, 0, 0.44);
+
+  /* Accent */
+  --accent: #0067c0;
+  --accent-hover: #0078d4;
+  --accent-pressed: #005ba1;
+  --accent-text: #ffffff;
+  --accent-subtle-bg: rgba(0, 103, 192, 0.08);
+  --accent-subtle-border: rgba(0, 103, 192, 0.4);
+
+  --success: #0f7b0f;
+  --danger: #c42b1c;
+
+  /* Elevation */
+  --shadow-flyout: 0 8px 16px rgba(0, 0, 0, 0.14), 0 0 2px rgba(0, 0, 0, 0.12);
+  --shadow-dialog: 0 16px 48px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+
+  --titlebar-height: 40px;
+}
+
+[data-theme="dark"] {
+  --bg-window: rgba(32, 32, 32, 0.86);
+  --bg-layer: #2b2b2b;
+  --bg-card: rgba(43, 43, 43, 0.72);
+  --bg-subtle: #272727;
+  --bg-hover: rgba(255, 255, 255, 0.06);
+  --bg-active: rgba(255, 255, 255, 0.1);
+
+  --stroke: rgba(255, 255, 255, 0.08);
+  --stroke-strong: rgba(255, 255, 255, 0.16);
+  --stroke-control: rgba(255, 255, 255, 0.5);
+
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.72);
+  --text-tertiary: rgba(255, 255, 255, 0.5);
+
+  --accent: #60cdff;
+  --accent-hover: #7bd7ff;
+  --accent-pressed: #4cc2ff;
+  --accent-text: #003a5c;
+  --accent-subtle-bg: rgba(96, 205, 255, 0.09);
+  --accent-subtle-border: rgba(96, 205, 255, 0.4);
+
+  --success: #6ccb5f;
+  --danger: #ff99a4;
+
+  --shadow-flyout: 0 8px 16px rgba(0, 0, 0, 0.5), 0 0 2px rgba(0, 0, 0, 0.4);
+  --shadow-dialog: 0 16px 48px rgba(0, 0, 0, 0.55), 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Plain-browser fallback so the palette reads correctly without Mica */
+html.browser-env {
+  background: #f3f3f3;
+}
+html.browser-env[data-theme="dark"] {
+  background: #202020;
+}
+
+/* ---------- Base ---------- */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font);
+  font-size: 14px;
+  color: var(--text-primary);
+  background: var(--bg-window);
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+#app {
+  height: 100%;
+}
+
+::selection {
+  background: var(--accent-subtle-bg);
+}
+
+/* ---------- App shell ---------- */
+
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.app-main {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Fluent thin scrollbars ---------- */
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--stroke-strong);
+  border-radius: 6px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-tertiary);
+  background-clip: content-box;
+}

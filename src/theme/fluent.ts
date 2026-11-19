@@ -1,0 +1,101 @@
+import type { GlobalThemeOverrides } from "naive-ui";
+
+/**
+ * Naive UI theme overrides built from the Fluent design tokens defined in
+ * `styles/global.css`. Keep the two files in sync so Naive widgets and the
+ * hand-drawn surfaces (title bar, status bar) read as one visual system.
+ */
+const fontFamily =
+  '"Segoe UI Variable Text", "Segoe UI Variable", "Segoe UI", "Microsoft YaHei UI", system-ui, sans-serif';
+
+export const fluentLight: GlobalThemeOverrides = {
+  common: {
+    fontFamily,
+    borderRadius: "4px",
+    borderRadiusSmall: "2px",
+    heightSmall: "28px",
+    heightMedium: "32px",
+    primaryColor: "#0067c0",
+    primaryColorHover: "#0078d4",
+    primaryColorPressed: "#005ba1",
+    primaryColorSuppl: "#0078d4",
+    infoColor: "#0067c0",
+    infoColorHover: "#0078d4",
+    infoColorPressed: "#005ba1",
+    infoColorSuppl: "#0078d4",
+    successColor: "#0f7b0f",
+    warningColor: "#9d5d00",
+    errorColor: "#c42b1c",
+    bodyColor: "rgba(243, 243, 243, 0.86)",
+    cardColor: "rgba(255, 255, 255, 0.72)",
+    modalColor: "#ffffff",
+    popoverColor: "#ffffff",
+    inputColor: "rgba(255, 255, 255, 0.7)",
+    textColorBase: "#1b1b1b",
+    textColor1: "#1b1b1b",
+    textColor2: "rgba(0, 0, 0, 0.6)",
+    textColor3: "rgba(0, 0, 0, 0.44)",
+    placeholderColor: "rgba(0, 0, 0, 0.44)",
+    borderColor: "rgba(0, 0, 0, 0.13)",
+    dividerColor: "rgba(0, 0, 0, 0.07)",
+  },
+  Button: {
+    // Fluent secondary buttons keep a visible stroke in both themes.
+    border: "1px solid rgba(0, 0, 0, 0.24)",
+    borderHover: "1px solid rgba(0, 0, 0, 0.24)",
+    borderFocus: "1px solid rgba(0, 0, 0, 0.24)",
+    borderPressed: "1px solid rgba(0, 0, 0, 0.24)",
+  },
+};
+
+export const fluentDark: GlobalThemeOverrides = {
+  common: {
+    fontFamily,
+    borderRadius: "4px",
+    borderRadiusSmall: "2px",
+    heightSmall: "28px",
+    heightMedium: "32px",
+    primaryColor: "#60cdff",
+    primaryColorHover: "#7bd7ff",
+    primaryColorPressed: "#4cc2ff",
+    primaryColorSuppl: "#7bd7ff",
+    infoColor: "#60cdff",
+    infoColorHover: "#7bd7ff",
+    infoColorPressed: "#4cc2ff",
+    infoColorSuppl: "#7bd7ff",
+    successColor: "#6ccb5f",
+    warningColor: "#ffb02e",
+    errorColor: "#ff99a4",
+    bodyColor: "rgba(32, 32, 32, 0.86)",
+    cardColor: "rgba(43, 43, 43, 0.72)",
+    modalColor: "#2b2b2b",
+    popoverColor: "#2b2b2b",
+    inputColor: "rgba(255, 255, 255, 0.06)",
+    textColorBase: "#ffffff",
+    textColor1: "#ffffff",
+    textColor2: "rgba(255, 255, 255, 0.72)",
+    textColor3: "rgba(255, 255, 255, 0.5)",
+    placeholderColor: "rgba(255, 255, 255, 0.5)",
+    borderColor: "rgba(255, 255, 255, 0.16)",
+    dividerColor: "rgba(255, 255, 255, 0.08)",
+  },
+  Button: {
+    colorPrimary: "#60cdff",
+    colorHoverPrimary: "#7bd7ff",
+    colorPressedPrimary: "#4cc2ff",
+    colorFocusPrimary: "#60cdff",
+    // WinUI accent buttons use dark text on the light-blue fill.
+    textColorPrimary: "#003a5c",
+    textColorHoverPrimary: "#003a5c",
+    textColorPressedPrimary: "#003a5c",
+    textColorFocusPrimary: "#003a5c",
+    borderPrimary: "1px solid transparent",
+    borderHoverPrimary: "1px solid transparent",
+    borderPressedPrimary: "1px solid transparent",
+    borderFocusPrimary: "1px solid transparent",
+    border: "1px solid rgba(255, 255, 255, 0.5)",
+    borderHover: "1px solid rgba(255, 255, 255, 0.5)",
+    borderFocus: "1px solid rgba(255, 255, 255, 0.5)",
+    borderPressed: "1px solid rgba(255, 255, 255, 0.5)",
+  },
+};

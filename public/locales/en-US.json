@@ -1,0 +1,42 @@
+{
+  "app": {
+    "name": "Tauri Bootstrap Demo"
+  },
+  "titlebar": {
+    "settings": "Settings"
+  },
+  "menu": {
+    "file": "File",
+    "help": "Help",
+    "settings": "Settings",
+    "exit": "Exit",
+    "about": "About"
+  },
+  "about": {
+    "title": "About {name}",
+    "desc": "A desktop app template built with Tauri 2, Vue 3 and Naive UI",
+    "homepage": "Website: ",
+    "author": "Author: "
+  },
+  "welcome": {
+    "title": "Welcome to {name}",
+    "desc": "A desktop app template built on Tauri 2 + Vue 3 + Naive UI, with Fluent-style theming, i18n and persisted settings — ready to bootstrap your next project.",
+    "openSettings": "Open Settings",
+    "greet": "Greet Backend",
+    "greetFailed": "Not running inside Tauri — the Rust backend is unavailable"
+  },
+  "settings": {
+    "title": "Settings",
+    "close": "Close",
+    "darkMode": "Dark mode",
+    "darkModeHint": "Switch the app between light and dark themes",
+    "language": "Language",
+    "languageHint": "Choose the UI language, applied immediately",
+    "followSystem": "Follow system",
+    "about": "About",
+    "version": "Version"
+  },
+  "status": {
+    "ready": "Ready"
+  }
+}
