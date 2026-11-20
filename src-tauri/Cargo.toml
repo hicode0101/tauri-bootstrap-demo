@@ -17,6 +17,11 @@ tauri-plugin-opener = "2"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 
+[target."cfg(windows)".dependencies]
+# Versions must stay in sync with tauri's own WebView2 deps so the COM types unify.
+webview2-com = "0.39"
+windows = "0.62"
+
 [profile.release]
 codegen-units = 1
 lto = true

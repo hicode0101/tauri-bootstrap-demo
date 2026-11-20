@@ -64,7 +64,7 @@ src-tauri/src/        # main.rs → lib.rs(Builder) → config.rs → commands/
 
 ## 7. 窗口与 UI
 
-- 窗口：`decorations:false` + `transparent:true` + Mica（仅保证 Win11）+ 居中，1080×720 / min 800×560
+- 窗口：`decorations:false` + 不透明（`transparent:false`，无 Mica，底色走 `--bg-window` 实色）+ 居中，1080×720 / min 800×560；全局禁用 WebView2 默认右键菜单——在 `lib.rs` setup 中经 `with_webview` 调 `ICoreWebView2Settings6::SetAreDefaultContextMenusEnabled(false)`（Windows）
 - 标题栏：整栏拖拽，右侧仅 最小化/最大化/关闭 三钮，关闭钮 hover `#c42b1c` 白字；菜单栏：`NDropdown trigger="manual" size="large"`，经典交互（点击开合、悬停切换、Esc/外部关闭），`min-width:300px`，破坏性项前加分隔线，右侧固定 主题切换 + 设置齿轮 两枚快捷钮；状态栏：就绪绿点 + 技术栈标识 + 版本号（浏览器环境隐藏）
 - 主题入口三处状态联动：菜单栏快捷钮、文件菜单→设置、帮助菜单→关于
 - 弹窗：`NModal` + Fluent 卡片，**必须支持标题栏拖拽**——统一 `src/lib/dialogDrag.ts` 的 `useDraggableCard()`（把手 `onHeaderPointerDown`、卡片 `cardStyle`、关闭时 `reset()`），不得各自手写
@@ -99,4 +99,4 @@ src-tauri/src/        # main.rs → lib.rs(Builder) → config.rs → commands/
 - 不提交 `node_modules`、`dist`、`src-tauri/target`、`src-tauri/gen/schemas`
 - 结构性改动同步更新 `README.md`（面向人）与本文件（面向代理）
 - npm 安装时 esbuild postinstall 可能被 allowScripts 拦截——无害；构建异常时 `npm install-scripts approve esbuild` 后重装
-- 透明窗口/Mica 仅保证 Windows 11；跨平台透明需另行验证
+- `Cargo.toml` 的 windows 目标依赖（`webview2-com` / `windows`）版本必须与 tauri 自身的 WebView2 依赖一致，否则 COM 类型无法统一编译失败
