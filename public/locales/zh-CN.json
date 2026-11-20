@@ -11,7 +11,7 @@
     "toggleTheme": "切换主题"
   },
   "about": {
-    "title": "关于 {name}",
+    "title": "关于",
     "desc": "一款基于 Tauri 2 + Vue 3 + Naive UI 的桌面应用模板",
     "homepage": "官网：",
     "author": "作者："

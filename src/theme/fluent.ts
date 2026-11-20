@@ -52,6 +52,32 @@ export const fluentLight: GlobalThemeOverrides = {
     optionPrefixWidth: "16px",
     optionSuffixWidth: "16px",
   },
+  // Toasts: Fluent flyout card. Values reference the CSS tokens in
+  // styles/global.css, so light/dark follow automatically. The left
+  // type-colored accent bar lives in global.css (no theme var for it).
+  Message: {
+    borderRadius: "8px",
+    border: "1px solid var(--stroke)",
+    color: "var(--bg-layer)",
+    colorInfo: "var(--bg-layer)",
+    colorSuccess: "var(--bg-layer)",
+    colorWarning: "var(--bg-layer)",
+    colorError: "var(--bg-layer)",
+    colorLoading: "var(--bg-layer)",
+    textColor: "var(--text-primary)",
+    textColorInfo: "var(--text-primary)",
+    textColorSuccess: "var(--text-primary)",
+    textColorWarning: "var(--text-primary)",
+    textColorError: "var(--text-primary)",
+    textColorLoading: "var(--text-primary)",
+    boxShadow: "var(--shadow-flyout)",
+    boxShadowInfo: "var(--shadow-flyout)",
+    boxShadowSuccess: "var(--shadow-flyout)",
+    boxShadowWarning: "var(--shadow-flyout)",
+    boxShadowError: "var(--shadow-flyout)",
+    boxShadowLoading: "var(--shadow-flyout)",
+    maxWidth: "480px",
+  },
 };
 
 export const fluentDark: GlobalThemeOverrides = {
@@ -108,5 +134,29 @@ export const fluentDark: GlobalThemeOverrides = {
     borderRadius: "8px",
     optionPrefixWidth: "16px",
     optionSuffixWidth: "16px",
+  },
+  // Same toast overrides as the light theme — values are CSS variables.
+  Message: {
+    borderRadius: "8px",
+    border: "1px solid var(--stroke)",
+    color: "var(--bg-layer)",
+    colorInfo: "var(--bg-layer)",
+    colorSuccess: "var(--bg-layer)",
+    colorWarning: "var(--bg-layer)",
+    colorError: "var(--bg-layer)",
+    colorLoading: "var(--bg-layer)",
+    textColor: "var(--text-primary)",
+    textColorInfo: "var(--text-primary)",
+    textColorSuccess: "var(--text-primary)",
+    textColorWarning: "var(--text-primary)",
+    textColorError: "var(--text-primary)",
+    textColorLoading: "var(--text-primary)",
+    boxShadow: "var(--shadow-flyout)",
+    boxShadowInfo: "var(--shadow-flyout)",
+    boxShadowSuccess: "var(--shadow-flyout)",
+    boxShadowWarning: "var(--shadow-flyout)",
+    boxShadowError: "var(--shadow-flyout)",
+    boxShadowLoading: "var(--shadow-flyout)",
+    maxWidth: "480px",
   },
 };

@@ -15,6 +15,7 @@
 - **浅色 / 深色主题**，默认浅色，设置中一键切换
 - **i18n 国际化**：语言文件独立存放（`public/locales/zh-CN.json`、`en-US.json`），设置下拉框支持「跟随系统 / 简体中文 / English」，切换立即生效
 - **设置持久化**：语言、主题保存在 `{app_data_dir}/config.json`（Rust 侧读写），重启后恢复
+- **操作反馈 toast**：右下角 Fluent 通知卡片（成功绿 / 提示蓝 / 失败红，左缘类型色条），深浅主题自适应，规范见 AGENTS.md「窗口与 UI 布局规范」
 - **Tauri IPC 示例**：`greet`、`app_version`、`get_config`、`save_config` 四个命令展示前后端通信
 
 ## 环境要求

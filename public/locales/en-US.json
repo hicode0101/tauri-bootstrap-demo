@@ -11,7 +11,7 @@
     "toggleTheme": "Toggle theme"
   },
   "about": {
-    "title": "About {name}",
+    "title": "About",
     "desc": "A desktop app template built with Tauri 2, Vue 3 and Naive UI",
     "homepage": "Website: ",
     "author": "Author: "

@@ -15,9 +15,10 @@ function openSettings(): void {
 async function greetBackend(): Promise<void> {
   try {
     const reply = await api.greet("Tauri 2");
-    message.info(reply);
+    // Operation succeeded → green toast; failed → red toast.
+    message.success(reply);
   } catch {
-    message.warning(t("welcome.greetFailed"));
+    message.error(t("welcome.greetFailed"));
   }
 }
 </script>

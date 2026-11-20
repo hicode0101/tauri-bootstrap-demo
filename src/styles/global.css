@@ -33,6 +33,7 @@
   --accent-subtle-border: rgba(0, 103, 192, 0.4);
 
   --success: #0f7b0f;
+  --warning: #9d5d00;
   --danger: #c42b1c;
 
   /* Elevation */
@@ -70,6 +71,7 @@
   --accent-subtle-border: rgba(96, 205, 255, 0.4);
 
   --success: #6ccb5f;
+  --warning: #ffb02e;
   --danger: #ff99a4;
 
   --shadow-flyout: 0 8px 16px rgba(0, 0, 0, 0.5), 0 0 2px rgba(0, 0, 0, 0.4);
@@ -134,6 +136,40 @@ body {
 
 .n-dropdown-menu {
   min-width: 300px;
+}
+
+/* ---------- Toasts: Fluent bottom-right cards with a type-colored accent bar ---------- */
+
+body .n-message-container.n-message-container--bottom-right {
+  /* float above the status bar (30px) and clear of the window edge */
+  bottom: 40px;
+  right: 16px;
+}
+
+body .n-message {
+  position: relative; /* anchor for the accent bar */
+}
+
+body .n-message::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+}
+
+body .n-message--info-type::before {
+  background: var(--accent); /* info / reminder: blue */
+}
+body .n-message--success-type::before {
+  background: var(--success); /* operation succeeded: green */
+}
+body .n-message--warning-type::before {
+  background: var(--warning);
+}
+body .n-message--error-type::before {
+  background: var(--danger); /* operation failed: red */
 }
 
 /* ---------- Fluent thin scrollbars ---------- */

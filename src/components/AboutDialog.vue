@@ -6,6 +6,7 @@ import { ui } from "@/stores/ui";
 import { api, openExternal } from "@/lib/tauri";
 import { APP_AUTHOR, APP_HOMEPAGE } from "@/lib/appInfo";
 import { useDraggableCard } from "@/lib/dialogDrag";
+import Icon from "./Icon.vue";
 
 const { t } = useI18n();
 const version = ref("");
@@ -34,13 +35,21 @@ function openHomepage(): void {
 
 <template>
   <NModal v-model:show="ui.aboutOpen" :mask-style="{ background: 'rgba(0, 0, 0, 0.35)' }">
-    <div class="about-card" :style="cardStyle" role="dialog" :aria-label="t('about.title', { name: t('app.name') })">
+    <div class="about-card" :style="cardStyle" role="dialog" :aria-label="t('about.title')">
       <header class="about-header" @pointerdown="onHeaderPointerDown">
-        <h2 class="about-title">{{ t("about.title", { name: t("app.name") }) }}</h2>
+        <h2 class="about-title">{{ t("about.title") }}</h2>
+        <button
+          class="about-close"
+          type="button"
+          :aria-label="t('settings.close')"
+          @click="ui.aboutOpen = false"
+        >
+          <Icon name="dismiss" :size="16" />
+        </button>
       </header>
 
       <div class="about-body">
-        <svg class="about-logo" viewBox="0 0 24 24" width="72" height="72" aria-hidden="true">
+        <svg class="about-logo" viewBox="0 0 24 24" width="76" height="76" aria-hidden="true">
           <rect x="1.5" y="1.5" width="21" height="21" rx="5" fill="var(--accent)" />
           <path
             d="M7.2 8.4 10.7 12l-3.5 3.6"
@@ -53,12 +62,11 @@ function openHomepage(): void {
           <path d="M12.8 15.6H17" stroke="var(--accent-text)" stroke-width="1.9" fill="none" stroke-linecap="round" />
         </svg>
 
-        <div class="about-info">
-          <div class="about-name-row">
-            <span class="about-name">{{ t("app.name") }}</span>
-            <span class="about-version">{{ version ? `v${version}` : "-" }}</span>
-          </div>
-          <p class="about-desc">{{ t("about.desc") }}</p>
+        <div class="about-name">{{ t("app.name") }}</div>
+        <div class="about-version">{{ version ? `v${version}` : "-" }}</div>
+        <p class="about-desc">{{ t("about.desc") }}</p>
+
+        <div class="about-meta">
           <div class="about-row">
             <span class="about-label">{{ t("about.homepage") }}</span>
             <a href="#" class="about-link" @click.prevent="openHomepage">{{ APP_HOMEPAGE }}</a>
@@ -93,61 +101,89 @@ function openHomepage(): void {
 }
 
 .about-header {
-  margin: 0 0 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 2px;
   cursor: grab;
 }
 
 .about-title {
+  flex: 1;
+  min-width: 0;
   margin: 0;
   font-size: 20px;
   font-weight: 650;
 }
 
+.about-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+.about-close:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+.about-close:active {
+  background: var(--bg-active);
+}
+
 .about-body {
   display: flex;
-  gap: 18px;
-  padding-bottom: 20px;
+  flex-direction: column;
+  align-items: center;
+  padding: 14px 24px 28px;
+  text-align: center;
 }
 
 .about-logo {
   border-radius: 16px;
-  flex-shrink: 0;
-}
-
-.about-info {
-  flex: 1;
-  min-width: 0;
-  padding-top: 4px;
-  font-size: 13.5px;
-}
-
-.about-name-row {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  margin-bottom: 6px;
+  margin-bottom: 16px;
 }
 
 .about-name {
-  font-size: 16px;
-  font-weight: 650;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.3;
 }
 
 .about-version {
-  font-size: 12.5px;
-  color: var(--text-secondary);
+  margin-top: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: var(--accent);
   font-variant-numeric: tabular-nums;
 }
 
 .about-desc {
-  margin: 0 0 10px;
+  margin: 10px 0 14px;
+  font-size: 13.5px;
   color: var(--text-secondary);
   line-height: 1.6;
 }
 
+/* Label/value rows stay left-aligned inside the centered column */
+.about-meta {
+  width: fit-content;
+  max-width: 100%;
+  text-align: left;
+  font-size: 13.5px;
+}
+
 .about-row {
   display: flex;
-  gap: 6px;
+  gap: 4px;
   margin-top: 6px;
 }
 

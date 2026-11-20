@@ -35,7 +35,8 @@ const naiveDateLocale = computed(() =>
     :locale="naiveLocale"
     :date-locale="naiveDateLocale"
   >
-    <NMessageProvider>
+    <!-- Toasts pop in the bottom-right corner, Windows 11 notification style -->
+    <NMessageProvider placement="bottom-right" :duration="4000" :max="3" keep-alive-on-hover>
       <div class="app-shell">
         <TitleBar />
         <MenuBar />
