@@ -6,10 +6,10 @@
   --font: "Segoe UI Variable Text", "Segoe UI Variable", "Segoe UI",
     "Microsoft YaHei UI", system-ui, sans-serif;
 
-  /* Window layers (semi-transparent so Mica shows through) */
-  --bg-window: rgba(243, 243, 243, 0.86);
+  /* Window layers (opaque) */
+  --bg-window: #f3f3f3;
   --bg-layer: #ffffff;
-  --bg-card: rgba(255, 255, 255, 0.72);
+  --bg-card: #ffffff;
   --bg-subtle: #f4f4f4;
   --bg-hover: rgba(0, 0, 0, 0.045);
   --bg-active: rgba(0, 0, 0, 0.08);
@@ -48,9 +48,9 @@
 }
 
 [data-theme="dark"] {
-  --bg-window: rgba(32, 32, 32, 0.86);
+  --bg-window: #202020;
   --bg-layer: #2b2b2b;
-  --bg-card: rgba(43, 43, 43, 0.72);
+  --bg-card: #2b2b2b;
   --bg-subtle: #272727;
   --bg-hover: rgba(255, 255, 255, 0.06);
   --bg-active: rgba(255, 255, 255, 0.1);
