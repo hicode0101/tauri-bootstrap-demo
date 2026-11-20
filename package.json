@@ -8,6 +8,7 @@
     "dev": "vite",
     "prebuild": "node scripts/sync-version.mjs",
     "build": "vue-tsc --noEmit && vite build",
+    "typecheck": "vue-tsc --noEmit",
     "preview": "vite preview",
     "tauri": "tauri",
     "tauri:dev": "tauri dev",

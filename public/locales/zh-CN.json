@@ -2,15 +2,13 @@
   "app": {
     "name": "Tauri Bootstrap Demo"
   },
-  "titlebar": {
-    "settings": "设置"
-  },
   "menu": {
     "file": "文件(F)",
     "help": "帮助(H)",
     "settings": "设置",
     "exit": "退出",
-    "about": "关于"
+    "about": "关于",
+    "toggleTheme": "切换主题"
   },
   "about": {
     "title": "关于 {name}",
@@ -28,13 +26,13 @@
   "settings": {
     "title": "设置",
     "close": "关闭",
-    "darkMode": "深色模式",
-    "darkModeHint": "切换应用的浅色与深色主题",
+    "theme": "主题",
+    "themeHint": "选择应用的显示主题，立即生效",
+    "light": "浅色模式",
+    "dark": "深色模式",
     "language": "语言",
     "languageHint": "选择界面显示语言，立即生效",
-    "followSystem": "跟随系统",
-    "about": "关于",
-    "version": "版本"
+    "followSystem": "跟随系统"
   },
   "status": {
     "ready": "就绪"

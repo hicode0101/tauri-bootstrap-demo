@@ -1,13 +1,23 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { NButton, NModal } from "naive-ui";
 import { useI18n } from "vue-i18n";
 import { ui } from "@/stores/ui";
 import { api, openExternal } from "@/lib/tauri";
 import { APP_AUTHOR, APP_HOMEPAGE } from "@/lib/appInfo";
+import { useDraggableCard } from "@/lib/dialogDrag";
 
 const { t } = useI18n();
 const version = ref("");
+
+// Drag-to-move via the header; re-center when the dialog closes.
+const { cardStyle, onHeaderPointerDown, reset: resetDragPosition } = useDraggableCard();
+watch(
+  () => ui.aboutOpen,
+  (open) => {
+    if (!open) resetDragPosition();
+  },
+);
 
 onMounted(async () => {
   try {
@@ -24,8 +34,10 @@ function openHomepage(): void {
 
 <template>
   <NModal v-model:show="ui.aboutOpen" :mask-style="{ background: 'rgba(0, 0, 0, 0.35)' }">
-    <div class="about-card" role="dialog" :aria-label="t('about.title', { name: t('app.name') })">
-      <h2 class="about-title">{{ t("about.title", { name: t("app.name") }) }}</h2>
+    <div class="about-card" :style="cardStyle" role="dialog" :aria-label="t('about.title', { name: t('app.name') })">
+      <header class="about-header" @pointerdown="onHeaderPointerDown">
+        <h2 class="about-title">{{ t("about.title", { name: t("app.name") }) }}</h2>
+      </header>
 
       <div class="about-body">
         <svg class="about-logo" viewBox="0 0 24 24" width="72" height="72" aria-hidden="true">
@@ -80,8 +92,13 @@ function openHomepage(): void {
   box-shadow: var(--shadow-dialog);
 }
 
-.about-title {
+.about-header {
   margin: 0 0 18px;
+  cursor: grab;
+}
+
+.about-title {
+  margin: 0;
   font-size: 20px;
   font-weight: 650;
 }

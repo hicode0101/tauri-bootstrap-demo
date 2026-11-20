@@ -4,11 +4,20 @@ import { NDropdown, type DropdownOption } from "naive-ui";
 import { useI18n } from "vue-i18n";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { isTauri } from "@/lib/tauri";
+import { resolvedTheme } from "@/lib/theme";
+import { updateTheme } from "@/stores/settings";
 import { ui } from "@/stores/ui";
+import Icon from "./Icon.vue";
 
 const { t } = useI18n();
 const openMenu = ref<string | null>(null);
 const win = isTauri() ? getCurrentWindow() : null;
+
+const isDark = computed(() => resolvedTheme.value === "dark");
+
+function toggleTheme(): void {
+  void updateTheme(isDark.value ? "light" : "dark");
+}
 
 const fileOptions = computed<DropdownOption[]>(() => [
   { label: t("menu.settings"), key: "settings" },
@@ -65,6 +74,7 @@ onUnmounted(() => document.removeEventListener("keydown", onKeydown));
     <NDropdown
       trigger="manual"
       placement="bottom-start"
+      size="large"
       :show="openMenu === 'file'"
       :options="fileOptions"
       @select="onSelect"
@@ -84,6 +94,7 @@ onUnmounted(() => document.removeEventListener("keydown", onKeydown));
     <NDropdown
       trigger="manual"
       placement="bottom-start"
+      size="large"
       :show="openMenu === 'help'"
       :options="helpOptions"
       @select="onSelect"
@@ -99,6 +110,15 @@ onUnmounted(() => document.removeEventListener("keydown", onKeydown));
         {{ t("menu.help") }}
       </button>
     </NDropdown>
+
+    <div class="menu-actions">
+      <button type="button" class="action-btn" :title="t('menu.toggleTheme')" @click="toggleTheme">
+        <Icon :name="isDark ? 'sun' : 'moon'" :size="17" />
+      </button>
+      <button type="button" class="action-btn" :title="t('menu.settings')" @click="ui.settingsOpen = true">
+        <Icon name="settings" :size="16" />
+      </button>
+    </div>
   </nav>
 </template>
 
@@ -128,6 +148,34 @@ onUnmounted(() => document.removeEventListener("keydown", onKeydown));
   background: var(--bg-hover);
 }
 .menu-item.open {
+  background: var(--bg-active);
+}
+
+.menu-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: auto;
+  height: 100%;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: background 0.15s ease;
+}
+.action-btn:hover {
+  background: var(--bg-hover);
+}
+.action-btn:active {
   background: var(--bg-active);
 }
 </style>

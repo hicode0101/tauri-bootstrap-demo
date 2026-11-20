@@ -2,15 +2,13 @@
   "app": {
     "name": "Tauri Bootstrap Demo"
   },
-  "titlebar": {
-    "settings": "Settings"
-  },
   "menu": {
     "file": "File",
     "help": "Help",
     "settings": "Settings",
     "exit": "Exit",
-    "about": "About"
+    "about": "About",
+    "toggleTheme": "Toggle theme"
   },
   "about": {
     "title": "About {name}",
@@ -28,13 +26,13 @@
   "settings": {
     "title": "Settings",
     "close": "Close",
-    "darkMode": "Dark mode",
-    "darkModeHint": "Switch the app between light and dark themes",
+    "theme": "Theme",
+    "themeHint": "Choose the app theme, applied immediately",
+    "light": "Light mode",
+    "dark": "Dark mode",
     "language": "Language",
     "languageHint": "Choose the UI language, applied immediately",
-    "followSystem": "Follow system",
-    "about": "About",
-    "version": "Version"
+    "followSystem": "Follow system"
   },
   "status": {
     "ready": "Ready"

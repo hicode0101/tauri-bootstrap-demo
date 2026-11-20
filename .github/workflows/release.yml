@@ -1,0 +1,123 @@
+name: Release
+
+# 推送 v* 标签自动打包四平台并发布 Release：
+#   git tag v0.2.0 && git push origin v0.2.0
+# 也支持手动触发（workflow_dispatch，填入版本号，如 0.2.0）
+#
+# 版本号以 tag 为准：构建前自动把 tag 版本写入 Cargo.toml（本项目版本号
+# 唯一来源）与 package.json（scripts/sync-version.mjs）；tauri.conf.json
+# 有意不写 version 字段，安装包命名 / Windows 程序集信息 / 界面显示版本
+# 全部自动跟随 Cargo 版本。
+#
+# macOS 说明：GitHub 已淘汰 macos-13 Intel 云 runner，x86_64（Intel）版本
+# 改为在 macos-latest（M 系列 / arm64）runner 上交叉编译，产物仍为 Intel 版。
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: '版本号（如 0.2.0，不带 v 前缀）'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: windows-latest # Windows x64（NSIS + MSI + portable zip）
+            target: x86_64-pc-windows-msvc
+          - platform: ubuntu-22.04 # Linux x64（AppImage + deb）
+            target: x86_64-unknown-linux-gnu
+          - platform: macos-latest # macOS Apple Silicon（M 系列，arm64）
+            target: aarch64-apple-darwin
+          - platform: macos-latest # macOS Intel（x86_64）：在 arm64 runner 上交叉编译
+            target: x86_64-apple-darwin
+
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Determine version
+        id: version
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "version=${{ inputs.version }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Sync version with tag
+        shell: bash
+        run: node scripts/sync-version.mjs "${{ steps.version.outputs.version }}"
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri -> target
+          key: ${{ matrix.target }}
+
+      - name: Install Linux dependencies (webkit2gtk-4.1 等)
+        if: matrix.platform == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+          # 依赖对齐 Tauri v2 官方文档（Ubuntu 22.04）。注意：libappindicator3-dev 与
+          # libayatana-appindicator3-dev 互相 Conflicts 且前者已停止维护，同时安装会导致
+          # apt 报 held broken packages（exit 100），只能保留 ayatana 版
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev patchelf
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Build & Release (tauri-action)
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          # 产物标识与 Release 名（__VERSION__ 由 tauri-action 以应用版本替换，
+          # 该版本已在上方与 tag 同步进 Cargo.toml）
+          tagName: v${{ steps.version.outputs.version }}
+          releaseName: 'Tauri Bootstrap Demo v__VERSION__'
+          releaseBody: 'Tauri Bootstrap Demo ${{ github.ref_name }}。安装包见下方 Assets。'
+          releaseDraft: false
+          prerelease: false
+          args: --target ${{ matrix.target }}
+
+      # Windows 绿色便携版：单 exe 压缩为 zip，下载解压即可运行，无需安装
+      # （WebView2 运行时 Win10/11 系统自带，无其他依赖）
+      - name: Package Windows portable zip
+        if: matrix.platform == 'windows-latest'
+        shell: pwsh
+        run: |
+          $exe = "src-tauri/target/${{ matrix.target }}/release/tauri-bootstrap-demo.exe"
+          if (-not (Test-Path $exe)) { throw "构建产物不存在: $exe" }
+          Compress-Archive -Path $exe -DestinationPath "tauri-bootstrap-demo_${{ steps.version.outputs.version }}_x64_portable.zip" -Force
+
+      - name: Upload portable zip to Release
+        if: matrix.platform == 'windows-latest'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload "v${{ steps.version.outputs.version }}" \
+            "tauri-bootstrap-demo_${{ steps.version.outputs.version }}_x64_portable.zip" --clobber

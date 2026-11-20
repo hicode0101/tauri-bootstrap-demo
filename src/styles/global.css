@@ -130,6 +130,12 @@ body {
   flex-direction: column;
 }
 
+/* ---------- Menu-bar dropdowns: roomier Windows 11 flyout style ---------- */
+
+.n-dropdown-menu {
+  min-width: 300px;
+}
+
 /* ---------- Fluent thin scrollbars ---------- */
 
 ::-webkit-scrollbar {

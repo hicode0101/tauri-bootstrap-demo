@@ -46,6 +46,12 @@ export const fluentLight: GlobalThemeOverrides = {
     borderFocus: "1px solid rgba(0, 0, 0, 0.24)",
     borderPressed: "1px solid rgba(0, 0, 0, 0.24)",
   },
+  // Menu-bar dropdowns: flyout-style radius and roomy item insets.
+  Dropdown: {
+    borderRadius: "8px",
+    optionPrefixWidth: "16px",
+    optionSuffixWidth: "16px",
+  },
 };
 
 export const fluentDark: GlobalThemeOverrides = {
@@ -97,5 +103,10 @@ export const fluentDark: GlobalThemeOverrides = {
     borderHover: "1px solid rgba(255, 255, 255, 0.5)",
     borderFocus: "1px solid rgba(255, 255, 255, 0.5)",
     borderPressed: "1px solid rgba(255, 255, 255, 0.5)",
+  },
+  Dropdown: {
+    borderRadius: "8px",
+    optionPrefixWidth: "16px",
+    optionSuffixWidth: "16px",
   },
 };

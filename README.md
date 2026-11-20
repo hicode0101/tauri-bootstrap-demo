@@ -3,6 +3,8 @@
 基于 **Rust + Tauri 2 + Vue 3 + Vite + TypeScript + Naive UI** 的桌面应用起始模板。
 目标是：以后创建同类项目时，直接复制本目录并按下方「如何基于此模板创建新项目」重命名即可快速起步。
 
+> AI 编码助手与本项目/派生项目的规范约束统一见 [AGENTS.md](AGENTS.md)。
+
 内置能力：
 
 - 基本窗口程序：无边框窗口 + 自绘标题栏（拖拽、最小化 / 最大化 / 关闭），Windows 11 下启用 Mica 材质
@@ -29,11 +31,37 @@ npm run tauri:dev      # 开发模式（首次会编译 Rust，需数分钟）
 npm run tauri:build    # 打包安装程序（NSIS / MSI）
 ```
 
-纯前端调试（不带 Tauri 窗口，浏览器打开 <http://localhost:1420>）：
+纯前端调试（不带 Tauri 窗口，浏览器打开 <http://localhost:1520>）：
 
 ```bash
 npm run dev
 ```
+
+Windows 本地构建也可以用脚本（用法见 `build.bat` 头部注释）：
+
+```bat
+build.bat            :: release 安装包（NSIS/MSI）
+build.bat dev        :: 开发模式（热重载）
+build.bat debug      :: 调试包（编译快）
+build.bat exe        :: 仅调试 exe（最快）
+build.bat check      :: typecheck + cargo check
+```
+
+## 自动构建与发布（GitHub Actions）
+
+配置在 `.github/workflows/release.yml`，两种触发方式：
+
+```bash
+# 方式一：推送 v* 标签，自动构建四平台并发布 Release
+git tag v0.2.0 && git push origin v0.2.0
+
+# 方式二：Actions 页面手动触发（workflow_dispatch），填入版本号（如 0.2.0）
+```
+
+- 平台矩阵：Windows x64（NSIS + MSI + 绿色便携 zip）、Linux x64（AppImage + deb）、macOS arm64（M 系列）、**macOS Intel（x86_64，在 M 系列 runner 上交叉编译**——GitHub 已淘汰 Intel 云 runner）
+- 版本号以 tag 为准：构建前自动执行 `scripts/sync-version.mjs <tag版本>` 写入 Cargo.toml（唯一来源）与 package.json；tauri.conf.json 有意不写 version 字段，程序集/安装包/界面显示版本全部自动跟随
+- Windows 便携版为单 exe 的 zip，解压即用（WebView2 Win10/11 自带）
+- 派生新项目时记得更新 workflow 里的 `releaseName` 与便携 zip 文件名中的应用名
 
 ## 目录结构（与 HiNote 项目保持一致的约定）
 
@@ -41,7 +69,7 @@ npm run dev
 tauri-bootstrap-demo/
 ├─ index.html                     # Vite 入口 HTML
 ├─ package.json                   # 脚本与依赖
-├─ vite.config.ts                 # Vite 配置（@ 别名、1420 固定端口）
+├─ vite.config.ts                 # Vite 配置（@ 别名、1520 固定端口，避开 HiNote 的 1420）
 ├─ tsconfig.json / tsconfig.node.json
 ├─ scripts/
 │  ├─ gen-icon.mjs                # 纯 JS 生成 1024x1024 源图标（无图片依赖）
@@ -57,14 +85,15 @@ tauri-bootstrap-demo/
 │  ├─ App.vue                     # NConfigProvider（主题/语言接线）+ 应用骨架
 │  ├─ components/
 │  │  ├─ TitleBar.vue             # 自绘标题栏（窗口控制按钮）
-│  │  ├─ MenuBar.vue              # 顶部菜单栏（文件：设置/退出；帮助：关于）
+│  │  ├─ MenuBar.vue              # 顶部菜单栏（文件/帮助菜单 + 右侧主题切换、设置快捷按钮）
 │  │  ├─ StatusBar.vue            # 状态栏（就绪 / 版本号，版本来自 Rust）
 │  │  ├─ WelcomeView.vue          # 欢迎页（含 greet IPC 演示）
-│  │  ├─ SettingsDialog.vue       # 设置弹窗（主题开关、语言下拉、关于）
+│  │  ├─ SettingsDialog.vue       # 设置弹窗（主题下拉、语言下拉）
 │  │  ├─ AboutDialog.vue          # 关于弹窗（图标 / 版本 / 官网 / 作者）
 │  │  └─ Icon.vue                 # 行内 SVG 图标组件
 │  ├─ lib/
 │  │  ├─ appInfo.ts               # 应用元信息常量（官网 / 作者；版本号不在此定义）
+│  │  ├─ dialogDrag.ts            # 弹窗拖拽移动（useDraggableCard composable）
 │  │  ├─ i18n.ts                  # vue-i18n 封装：运行时加载 public/locales/*.json
 │  │  ├─ theme.ts                 # 主题状态与应用（data-theme 属性）
 │  │  ├─ tauri.ts                 # invoke 封装（api 对象）+ isTauri / openExternal

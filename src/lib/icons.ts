@@ -11,5 +11,6 @@ export const icons: Record<string, string> = {
   terminal: `<path d="M5 7l5 5-5 5"/><path d="M12 17h7"/>`,
   globe: `<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17"/><path d="M12 3.5c2.7 2.3 4 5.2 4 8.5s-1.3 6.2-4 8.5c-2.7-2.3-4-5.2-4-8.5s1.3-6.2 4-8.5z"/>`,
   moon: `<path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/>`,
+  sun: `<circle cx="12" cy="12" r="4"/><path d="M12 2.8v1.8M12 19.4v1.8M2.8 12h1.8M19.4 12h1.8M5.2 5.2l1.3 1.3M17.5 17.5l1.3 1.3M18.8 5.2l-1.3 1.3M6.5 17.5l-1.3 1.3"/>`,
   info: `<circle cx="12" cy="12" r="8.5"/><path d="M12 11.2v4.6"/><path d="M12 8h.01"/>`,
 };

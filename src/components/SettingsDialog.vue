@@ -1,23 +1,29 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
-import { NButton, NModal, NSelect, NSwitch } from "naive-ui";
+import { computed, watch } from "vue";
+import { NButton, NModal, NSelect } from "naive-ui";
 import { useI18n } from "vue-i18n";
 import { ui } from "@/stores/ui";
 import { settings, updateLanguage, updateTheme } from "@/stores/settings";
-import { api } from "@/lib/tauri";
 import type { LangOption } from "@/lib/i18n";
+import type { ThemeOption } from "@/lib/theme";
+import { useDraggableCard } from "@/lib/dialogDrag";
 import Icon from "./Icon.vue";
 
 const { t } = useI18n();
-const version = ref("");
 
-onMounted(async () => {
-  try {
-    version.value = await api.appVersion();
-  } catch {
-    // Running outside Tauri (e.g. plain browser) — leave the version empty.
-  }
-});
+// Drag-to-move via the header; re-center when the dialog closes.
+const { cardStyle, onHeaderPointerDown, reset: resetDragPosition } = useDraggableCard();
+watch(
+  () => ui.settingsOpen,
+  (open) => {
+    if (!open) resetDragPosition();
+  },
+);
+
+const themeOptions = computed(() => [
+  { label: t("settings.light"), value: "light" },
+  { label: t("settings.dark"), value: "dark" },
+]);
 
 const languageOptions = computed(() => [
   { label: t("settings.followSystem"), value: "system" },
@@ -25,10 +31,8 @@ const languageOptions = computed(() => [
   { label: "English", value: "en-US" },
 ]);
 
-const isDark = computed(() => settings.theme === "dark");
-
-function onThemeToggle(dark: boolean): void {
-  void updateTheme(dark ? "dark" : "light");
+function onThemeChange(value: string | number): void {
+  void updateTheme(String(value) as ThemeOption);
 }
 
 function onLanguageChange(value: string | number): void {
@@ -38,8 +42,8 @@ function onLanguageChange(value: string | number): void {
 
 <template>
   <NModal v-model:show="ui.settingsOpen" :mask-style="{ background: 'rgba(0, 0, 0, 0.35)' }">
-    <div class="settings-card" role="dialog" :aria-label="t('settings.title')">
-      <header class="card-header">
+    <div class="settings-card" :style="cardStyle" role="dialog" :aria-label="t('settings.title')">
+      <header class="card-header" @pointerdown="onHeaderPointerDown">
         <h2 class="card-title">{{ t("settings.title") }}</h2>
         <button class="icon-btn" :aria-label="t('settings.close')" @click="ui.settingsOpen = false">
           <Icon name="dismiss" :size="16" />
@@ -51,10 +55,16 @@ function onLanguageChange(value: string | number): void {
         <div class="setting-row">
           <span class="row-icon"><Icon name="moon" :size="20" /></span>
           <div class="row-text">
-            <div class="row-label">{{ t("settings.darkMode") }}</div>
-            <div class="row-hint">{{ t("settings.darkModeHint") }}</div>
+            <div class="row-label">{{ t("settings.theme") }}</div>
+            <div class="row-hint">{{ t("settings.themeHint") }}</div>
           </div>
-          <NSwitch :value="isDark" @update:value="onThemeToggle" />
+          <NSelect
+            class="row-select"
+            :value="settings.theme"
+            :options="themeOptions"
+            :consistent-menu-width="false"
+            @update:value="onThemeChange"
+          />
         </div>
 
         <!-- Language -->
@@ -71,16 +81,6 @@ function onLanguageChange(value: string | number): void {
             :consistent-menu-width="false"
             @update:value="onLanguageChange"
           />
-        </div>
-
-        <!-- About -->
-        <div class="setting-row">
-          <span class="row-icon"><Icon name="info" :size="20" /></span>
-          <div class="row-text">
-            <div class="row-label">{{ t("settings.about") }}</div>
-            <div class="row-hint">{{ t("app.name") }}</div>
-          </div>
-          <span class="row-value">v{{ version || "-" }}</span>
         </div>
       </div>
 
@@ -111,6 +111,7 @@ function onLanguageChange(value: string | number): void {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 6px;
+  cursor: grab;
 }
 
 .card-title {
@@ -176,12 +177,6 @@ function onLanguageChange(value: string | number): void {
 
 .row-select {
   width: 190px;
-}
-
-.row-value {
-  font-size: 13px;
-  color: var(--text-secondary);
-  font-variant-numeric: tabular-nums;
 }
 
 .card-footer {
