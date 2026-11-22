@@ -34,7 +34,13 @@ function openHomepage(): void {
 </script>
 
 <template>
-  <NModal v-model:show="ui.aboutOpen" :mask-style="{ background: 'rgba(0, 0, 0, 0.35)' }">
+  <!-- Mask clicks and Esc must NOT dismiss the dialog; only in-dialog actions may close it. -->
+  <NModal
+    v-model:show="ui.aboutOpen"
+    :mask-closable="false"
+    :close-on-esc="false"
+    :mask-style="{ background: 'rgba(0, 0, 0, 0.35)' }"
+  >
     <div class="about-card" :style="cardStyle" role="dialog" :aria-label="t('about.title')">
       <header class="about-header" @pointerdown="onHeaderPointerDown">
         <h2 class="about-title">{{ t("about.title") }}</h2>
