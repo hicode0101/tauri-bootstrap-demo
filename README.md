@@ -31,6 +31,7 @@
 - 📋 **顶部菜单栏**：「文件」（设置 / 退出）、「帮助」（关于），经典桌面交互（点击开合、悬停切换、Esc / 外部关闭），右侧固定主题切换与设置快捷按钮
 - 📊 **状态栏**：就绪状态指示 + 技术栈标识 + 版本号（版本经 IPC 从 Rust 读取）
 - 💬 **操作反馈 toast**：右下角 Fluent 通知卡片，成功 / 提示 / 失败 / 警告四种语义色
+- 📐 **弹窗拖拽与缩放**：弹窗统一由 `DialogCard` 基础组件创建，标题栏拖动、边缘/四角缩放默认开启，可用 `draggable` / `resizable` 属性独立关闭（最小尺寸 + 视口边界钳制，高度随内容自适应），关闭自动复位
 
 **主题与国际化**
 
@@ -135,10 +136,12 @@ tauri-bootstrap-demo/
 │  │  ├─ WelcomeView.vue          # 欢迎页（含 greet IPC 演示）
 │  │  ├─ SettingsDialog.vue       # 设置弹窗（主题下拉、语言下拉）
 │  │  ├─ AboutDialog.vue          # 关于弹窗（图标 / 版本 / 官网 / 作者）
+│  │  ├─ DialogCard.vue           # ★ 弹窗统一基础组件（NModal + 拖拽/缩放，能力由 props 控制）
+│  │  ├─ ResizeHandles.vue        # 弹窗边缘/四角缩放热区（8 向，配合 useDraggableCard）
 │  │  └─ Icon.vue                 # 行内 SVG 图标组件
 │  ├─ lib/
 │  │  ├─ appInfo.ts               # 应用元信息常量（官网 / 作者）
-│  │  ├─ dialogDrag.ts            # 弹窗标题栏拖拽（useDraggableCard）
+│  │  ├─ dialogDrag.ts            # 弹窗拖拽移动 + 边缘缩放（useDraggableCard）
 │  │  ├─ i18n.ts                  # vue-i18n 封装：运行时加载 public/locales/*.json
 │  │  ├─ theme.ts                 # 主题状态与应用（data-theme 属性）
 │  │  ├─ tauri.ts                 # invoke 封装（api 对象）+ isTauri / openExternal

@@ -67,7 +67,7 @@ src-tauri/src/        # main.rs → lib.rs(Builder) → config.rs → commands/
 - 窗口：`decorations:false` + 不透明（`transparent:false`，无 Mica，底色走 `--bg-window` 实色）+ 居中，1080×720 / min 800×560；全局禁用 WebView2 默认右键菜单——在 `lib.rs` setup 中经 `with_webview` 调 `ICoreWebView2Settings6::SetAreDefaultContextMenusEnabled(false)`（Windows）
 - 标题栏：整栏拖拽，右侧仅 最小化/最大化/关闭 三钮，关闭钮 hover `#c42b1c` 白字；菜单栏：`NDropdown trigger="manual" size="large"`，经典交互（点击开合、悬停切换、Esc/外部关闭），`min-width:300px`，破坏性项前加分隔线，右侧固定 主题切换 + 设置齿轮 两枚快捷钮；状态栏：就绪绿点 + 技术栈标识 + 版本号（浏览器环境隐藏）
 - 主题入口三处状态联动：菜单栏快捷钮、文件菜单→设置、帮助菜单→关于
-- 弹窗：`NModal` + Fluent 卡片，**必须支持标题栏拖拽**——统一 `src/lib/dialogDrag.ts` 的 `useDraggableCard()`（把手 `onHeaderPointerDown`、卡片 `cardStyle`、关闭时 `reset()`），不得各自手写；**遮罩点击与 Esc 一律不关闭**（`:mask-closable="false"` + `:close-on-esc="false"`），仅对话框内按钮等显式操作可关闭，防止误触取消
+- 弹窗：**一律用统一基础组件 `components/DialogCard.vue` 创建**（内部封装 `NModal` + `useDraggableCard`，含 Fluent 卡片样式、标题栏、关闭钮、footer 分隔线；遮罩点击与 Esc 一律不关闭，关闭仅能通过标题栏 X 或 footer 插槽按钮）。能力经 props 控制（**挂载时读取，运行时不响应变更**）：`draggable`（标题栏拖拽移动，默认 true）、`resizable`（边缘/四角缩放，默认 true，最小尺寸 `minWidth`/`minHeight`，视口四周留 24px）；`title`/`aria-label`/`close-label` 走 props，正文默认插槽、`footer` 具名插槽。不得各自手写 NModal + 拖拽/缩放接线
 - **toast（操作反馈）**：右下角弹出（`NMessageProvider placement="bottom-right" :duration="4000" :max="3" keep-alive-on-hover`）；样式 = Fluent 卡片（fluent.ts `Message` 覆盖，值引用 CSS 变量）+ 左缘 3px 类型色条（global.css）。**类型语义强制**：操作成功 `message.success`（绿）、提醒/提示 `message.info`（蓝 accent）、操作失败 `message.error`（红）、警告 `message.warning`（黄）
 - 图标一律 `Icon.vue` + `lib/icons.ts` 行内 SVG（24 网格 1.6 描边），不引第三方图标库；`body` 上 `user-select:none`；滚动条用 global.css 的 Fluent 细样式
 
